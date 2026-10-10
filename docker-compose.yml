@@ -1,0 +1,29 @@
+services:
+  blog:
+    build:
+      context: .
+      dockerfile: ./dockerfile
+    restart: always
+    container_name: personal_blog.01
+    #privileged: true
+    network_mode: "host"
+    environment:
+      - DOM=${DOM}
+      - UUID=${UUID}
+      - SID=${SID}
+      - PBK=${PBK}
+      - PRK=${PRK}
+      - XHTTP_PATH=${XHTTP_PATH}
+      - GRPC_NAME=${GRPC_NAME}
+      # self-steal Let's Encrypt
+      - SELFSTEAL=${SELFSTEAL:-0}
+      #- ACME_EMAIL=${ACME_EMAIL:-}
+      - ACME_STAGING=${ACME_STAGING:-0}
+      - SKIP_DNS_CHECK=${SKIP_DNS_CHECK:-0}
+      # Hysteria 2
+      - HY2_PLAIN=${HY2_PLAIN:-1}
+      - HY2_OBFS_PORT=${HY2_OBFS_PORT:-40443}
+    volumes:
+      - ./ssl:/etc/ssl/xray   # самоподписанный серт (классика)
+      - ./letsencrypt:/etc/letsencrypt   # LE-сертификаты (self-steal) - обязательно сохранять
+      - ./site:/var/www/site  # заглушка для nginx (self-steal)

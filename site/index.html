@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#090b18">
+  <meta name="description" content="A personal blog in the making — notes, ideas, and stories are taking shape.">
+  <title>Fieldnotes — A blog in the making</title>
+  <style>
+    :root {
+      --bg: #090b18;
+      --text: #f5f5ff;
+      --muted: #a6abc8;
+      --line: rgba(255,255,255,.13);
+      --glass: rgba(18,22,48,.66);
+      --cyan: #70f0e0;
+      --pink: #ff79c6;
+      --violet: #a78bfa;
+    }
+    * { box-sizing: border-box; }
+    html { min-height: 100%; }
+    body {
+      min-height: 100vh; margin: 0; color: var(--text);
+      font: 16px/1.65 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(ellipse at 15% 15%, rgba(85,74,190,.26), transparent 36rem),
+        radial-gradient(ellipse at 85% 75%, rgba(20,180,180,.15), transparent 34rem),
+        var(--bg);
+      overflow-x: hidden;
+    }
+    body::before {
+      content: ""; position: fixed; inset: 0; pointer-events: none; opacity: .19;
+      background-image: linear-gradient(rgba(255,255,255,.055) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255,255,255,.055) 1px, transparent 1px);
+      background-size: 46px 46px;
+      mask-image: linear-gradient(to bottom, black, transparent 92%);
+    }
+    .aurora { position: fixed; width: 25rem; height: 25rem; border-radius: 50%; filter: blur(75px); opacity: .17; pointer-events: none; animation: drift 15s ease-in-out infinite alternate; }
+    .aurora.one { background: var(--pink); top: -12rem; right: -7rem; }
+    .aurora.two { background: var(--cyan); bottom: -15rem; left: -9rem; animation-delay: -7s; }
+    @keyframes drift { to { transform: translate(35px, 45px) scale(1.14); } }
+    .topbar { width: min(1100px, calc(100% - 40px)); margin: 0 auto; padding: 28px 0; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand { display: inline-flex; align-items: center; gap: 11px; color: var(--text); text-decoration: none; font-weight: 750; letter-spacing: .02em; }
+    .brand-mark { width: 34px; height: 34px; display: grid; place-items: center; border: 1px solid rgba(112,240,224,.45); border-radius: 11px; color: var(--cyan); background: rgba(112,240,224,.08); box-shadow: 0 0 25px rgba(112,240,224,.12); }
+    .lang-switch { display: inline-flex; gap: 4px; padding: 4px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.045); backdrop-filter: blur(12px); }
+    .lang-switch button { font: inherit; font-size: .8rem; font-weight: 700; color: var(--muted); background: transparent; border: 0; border-radius: 999px; padding: 7px 12px; cursor: pointer; transition: .2s ease; }
+    .lang-switch button[aria-pressed="true"] { color: #080b16; background: var(--cyan); }
+    .lang-switch button:focus-visible { outline: 2px solid white; outline-offset: 3px; }
+    main { width: min(1000px, calc(100% - 40px)); margin: 0 auto; padding: clamp(48px, 9vh, 100px) 0 70px; position: relative; }
+    .hero { max-width: 800px; margin: 0 auto; text-align: center; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 9px; padding: 7px 13px; border: 1px solid rgba(112,240,224,.25); border-radius: 999px; color: var(--cyan); background: rgba(112,240,224,.065); font-size: .76rem; font-weight: 750; letter-spacing: .12em; text-transform: uppercase; }
+    .pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 0 5px rgba(112,240,224,.11); animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 50% { box-shadow: 0 0 0 9px rgba(112,240,224,0); } }
+    h1 { margin: 28px 0 22px; font-size: clamp(2.7rem, 7.6vw, 6rem); line-height: .99; letter-spacing: -.065em; font-weight: 800; }
+    .gradient { color: transparent; background: linear-gradient(100deg, #fff 8%, #b6b7ff 45%, #70f0e0 88%); background-clip: text; -webkit-background-clip: text; }
+    .lead { max-width: 640px; margin: 0 auto; color: #c0c4dc; font-size: clamp(1rem, 2vw, 1.2rem); }
+    .status-card { max-width: 720px; margin: 48px auto 0; padding: 25px; text-align: left; border: 1px solid var(--line); border-radius: 22px; background: linear-gradient(135deg, rgba(255,255,255,.075), rgba(255,255,255,.025)); box-shadow: 0 24px 90px rgba(0,0,0,.25); backdrop-filter: blur(18px); }
+    .card-head { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+    .card-title { margin: 0; font-size: .95rem; font-weight: 750; }
+    .live-label { color: #b9f8dd; background: rgba(77,220,157,.1); border: 1px solid rgba(77,220,157,.2); border-radius: 999px; padding: 4px 9px; font-size: .72rem; white-space: nowrap; }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding-top: 20px; }
+    .step { padding: 15px; min-height: 112px; border-radius: 14px; background: rgba(5,8,22,.32); border: 1px solid rgba(255,255,255,.07); }
+    .step-icon { display: block; margin-bottom: 9px; font-size: 1.2rem; }
+    .step strong { display: block; font-size: .88rem; }
+    .step span:last-child { display: block; color: var(--muted); font-size: .78rem; line-height: 1.5; margin-top: 3px; }
+    .bottom-note { display: flex; align-items: center; justify-content: center; gap: 10px; color: #8188ab; margin-top: 32px; font-size: .85rem; text-align: center; }
+    .sparkle { color: var(--pink); }
+    footer { padding: 25px 20px 32px; text-align: center; color: #777e9f; font-size: .78rem; }
+    footer .dot { color: var(--cyan); padding: 0 7px; }
+    @media (max-width: 600px) {
+      .topbar { width: calc(100% - 28px); padding-top: 18px; }
+      main { width: calc(100% - 28px); padding-top: 55px; }
+      .status-card { margin-top: 35px; padding: 18px; }
+      .steps { grid-template-columns: 1fr; }
+      .step { min-height: 0; display: grid; grid-template-columns: 30px 1fr; column-gap: 8px; align-items: start; }
+      .step-icon { grid-row: span 2; margin: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; } }
+  </style>
+</head>
+<body>
+  <div class="aurora one" aria-hidden="true"></div>
+  <div class="aurora two" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Fieldnotes home">
+      <span class="brand-mark" aria-hidden="true">✳</span>
+      <span>fieldnotes<span style="color:var(--cyan)">.</span></span>
+    </a>
+    <nav class="lang-switch" aria-label="Language">
+      <button type="button" data-lang="en" aria-pressed="true">EN</button>
+      <button type="button" data-lang="ru" aria-pressed="false">РУ</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="eyebrow"><span class="pulse" aria-hidden="true"></span><span data-i18n="eyebrow">A little work in progress</span></div>
+      <h1><span data-i18n="title1">Something good</span><br><span class="gradient" data-i18n="title2">is taking shape.</span></h1>
+      <p class="lead" data-i18n="lead">This little corner of the internet is becoming a home for thoughts, discoveries, and stories worth keeping. The foundations are in place; the details are still finding their way.</p>
+
+      <div class="status-card">
+        <div class="card-head">
+          <p class="card-title" data-i18n="cardTitle">Behind the scenes</p>
+          <span class="live-label"><span data-i18n="live">● In progress</span></span>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <span class="step-icon" aria-hidden="true">✦</span>
+            <strong data-i18n="s1title">Finding the shape</strong>
+            <span data-i18n="s1text">A home for ideas is taking form.</span>
+          </div>
+          <div class="step">
+            <span class="step-icon" aria-hidden="true">⌘</span>
+            <strong data-i18n="s2title">Tuning the details</strong>
+            <span data-i18n="s2text">Design, structure, and little finishing touches.</span>
+          </div>
+          <div class="step">
+            <span class="step-icon" aria-hidden="true">↗</span>
+            <strong data-i18n="s3title">Preparing for launch</strong>
+            <span data-i18n="s3text">The first posts will arrive when they are ready.</span>
+          </div>
+        </div>
+      </div>
+      <p class="bottom-note"><span class="sparkle" aria-hidden="true">✧</span><span data-i18n="note">No rush. Good things take a little time.</span><span class="sparkle" aria-hidden="true">✧</span></p>
+    </section>
+  </main>
+
+  <footer>© <span id="year">2026</span> fieldnotes <span class="dot">•</span> <span data-i18n="footer">A quiet place for things worth sharing.</span></footer>
+
+  <script>
+    const translations = {
+      en: {
+        eyebrow: "A little work in progress",
+        title1: "Something good", title2: "is taking shape.",
+        lead: "This little corner of the internet is becoming a home for thoughts, discoveries, and stories worth keeping. The foundations are in place; the details are still finding their way.",
+        cardTitle: "Behind the scenes", live: "● In progress",
+        s1title: "Finding the shape", s1text: "A home for ideas is taking form.",
+        s2title: "Tuning the details", s2text: "Design, structure, and little finishing touches.",
+        s3title: "Preparing for launch", s3text: "The first posts will arrive when they are ready.",
+        note: "No rush. Good things take a little time.",
+        footer: "A quiet place for things worth sharing."
+      },
+      ru: {
+        eyebrow: "Небольшой проект в работе",
+        title1: "Здесь рождается", title2: "кое-что интересное.",
+        lead: "Этот небольшой уголок интернета постепенно становится местом для мыслей, открытий и историй, которыми хочется поделиться. Основа уже заложена — теперь мы неспешно доводим до ума детали.",
+        cardTitle: "Что происходит за кулисами", live: "● Работа идёт",
+        s1title: "Ищем форму", s1text: "Создаём уютное пространство для идей.",
+        s2title: "Настраиваем детали", s2text: "Продумываем оформление, структуру и мелочи.",
+        s3title: "Готовимся к запуску", s3text: "Первые публикации появятся, когда будут готовы.",
+        note: "Спешить некуда. Хорошие вещи требуют времени.",
+        footer: "Тихое место для того, чем стоит поделиться."
+      }
+    };
+
+    function setLanguage(lang) {
+      const dictionary = translations[lang] || translations.en;
+      document.documentElement.lang = lang;
+      document.title = lang === "ru" ? "Fieldnotes — Блог в разработке" : "Fieldnotes — A blog in the making";
+      document.querySelectorAll("[data-i18n]").forEach((element) => {
+        const key = element.dataset.i18n;
+        if (dictionary[key]) element.textContent = dictionary[key];
+      });
+      document.querySelectorAll("[data-lang]").forEach((button) => {
+        button.setAttribute("aria-pressed", String(button.dataset.lang === lang));
+      });
+      try { localStorage.setItem("fieldnotes-language", lang); } catch (_) {}
+    }
+
+    document.querySelectorAll("[data-lang]").forEach((button) => {
+      button.addEventListener("click", () => setLanguage(button.dataset.lang));
+    });
+    document.getElementById("year").textContent = new Date().getFullYear();
+    // English is the default. Restore a language only if the visitor previously selected one.
+    try {
+      const saved = localStorage.getItem("fieldnotes-language");
+      if (saved === "ru" || saved === "en") setLanguage(saved);
+    } catch (_) {}
+  </script>
+</body>
+</html>

@@ -1,0 +1,189 @@
+{
+  "log": {
+    "loglevel": "warning"
+  },
+  "routing": {
+    "domainStrategy": "IPIfNonMatch",
+    "rules": [
+      { "type": "field", "domain": ["geosite:category-ads-all"], "outboundTag": "block" },
+      { "type": "field", "domain": ["geosite:category-ru"], "outboundTag": "block" },
+      { "type": "field", "ip": ["geoip:cn"], "outboundTag": "block" },
+      { "type": "field", "ip": ["geoip:ru"], "outboundTag": "block" },
+      { "type": "field", "domain": ["domain:ru", "domain:xn--p1ai", "domain:su"], "outboundTag": "block" }
+    ]
+  },
+  "inbounds": [
+    {
+      "tag": "inbound-443",
+      "listen": "0.0.0.0",
+      "port": 443,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          { "id": "${UUID}", "email": "main-vision", "flow": "xtls-rprx-vision" }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "reality",
+        "realitySettings": {
+          "show": false,
+          "target": "${REALITY_TARGET}",
+          "serverNames": ["${DOM}"],
+          "privateKey": "${PRK}",
+          "minClientVer": "",
+          "maxClientVer": "",
+          "maxTimeDiff": 0,
+          "shortIds": ["${SID}"]
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls", "quic"],
+        "routeOnly": true
+      }
+    },
+    {
+      "tag": "inbound-xhttp",
+      "listen": "0.0.0.0",
+      "port": 8443,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          { "id": "${UUID}", "email": "main-xhttp" }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "reality",
+        "realitySettings": {
+          "show": false,
+          "target": "${REALITY_TARGET}",
+          "serverNames": ["${DOM}"],
+          "privateKey": "${PRK}",
+          "minClientVer": "",
+          "maxClientVer": "",
+          "maxTimeDiff": 0,
+          "shortIds": ["${SID}"]
+        },
+        "xhttpSettings": {
+          "path": "/${XHTTP_PATH}",
+          "mode": "auto"
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls", "quic"],
+        "routeOnly": true
+      }
+    },
+    {
+      "tag": "inbound-grpc",
+      "listen": "0.0.0.0",
+      "port": 2053,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          { "id": "${UUID}", "email": "main-grpc" }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "grpc",
+        "security": "reality",
+        "realitySettings": {
+          "show": false,
+          "target": "${REALITY_TARGET}",
+          "serverNames": ["${DOM}"],
+          "privateKey": "${PRK}",
+          "minClientVer": "",
+          "maxClientVer": "",
+          "maxTimeDiff": 0,
+          "shortIds": ["${SID}"]
+        },
+        "grpcSettings": {
+          "serviceName": "${GRPC_NAME}",
+          "multiMode": false
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls", "quic"],
+        "routeOnly": true
+      }
+    },
+    {
+      "tag": "inbound-hysteria2",
+      "port": 443,
+      "protocol": "hysteria",
+      "settings": {
+        "version": 2,
+        "users": [
+          { "auth": "${UUID}", "email": "main-hy2" }
+        ]
+      },
+      "streamSettings": {
+        "network": "hysteria",
+        "security": "tls",
+        "tlsSettings": {
+          "alpn": ["h3"],
+          "certificates": [
+            {
+              "certificateFile": "${HY2_CERT}",
+              "keyFile": "${HY2_KEY}"
+            }
+          ]
+        },
+        "hysteriaSettings": { "version": 2 }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls", "quic"],
+        "routeOnly": true
+      }
+    },
+    {
+      "tag": "inbound-hysteria2-obfs",
+      "port": ${HY2_OBFS_PORT},
+      "protocol": "hysteria",
+      "settings": {
+        "version": 2,
+        "users": [
+          { "auth": "${UUID}", "email": "main-hy2-obfs" }
+        ]
+      },
+      "streamSettings": {
+        "network": "hysteria",
+        "security": "tls",
+        "tlsSettings": {
+          "alpn": ["h3"],
+          "certificates": [
+            { "certificateFile": "${HY2_CERT}", "keyFile": "${HY2_KEY}" }
+          ]
+        },
+        "hysteriaSettings": { "version": 2 },
+        "finalmask": {
+          "udp": [
+            { "type": "salamander", "settings": { "password": "${SID}" } }
+          ]
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls", "quic"],
+        "routeOnly": true
+      }
+    }
+  ],
+  "outbounds": [
+    { "protocol": "freedom", "tag": "direct" },
+    { "protocol": "blackhole", "tag": "block" }
+  ],
+  "policy": {
+    "levels": {
+      "0": { "handshake": 10, "connIdle": 300 }
+    }
+  }
+}
