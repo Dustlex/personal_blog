@@ -20,7 +20,7 @@ if [ "$SELFSTEAL" = "1" ]; then
   export REALITY_TARGET="127.0.0.1:8001"
   export HY2_CERT="/etc/letsencrypt/live/${DOM}/fullchain.pem"
   export HY2_KEY="/etc/letsencrypt/live/${DOM}/privkey.pem"
-  source /home/selfsteal.sh          # nginx + certbot + фоновое продление при ошибке отвалится с exit 1
+  source /home/slfstl.sh          # nginx + certbot + фоновое продление при ошибке отвалится с exit 1
   : > /home/fingerprint.txt          # пин больше не нужен у Hysteria теперь валидный сертификат
 else
   # стандарт реалити копирует реальный сайт ${DOM}
