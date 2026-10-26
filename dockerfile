@@ -13,7 +13,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
  certbot \
  jq \
  && rm -rf /var/lib/apt/lists/*
-RUN wget https://github.com/XTLS/Xray-core/releases/download/v26.9.30/Xray-linux-64.zip --no-check-certificate && \
+RUN wget https://github.com/XTLS/Xray-core/releases/download/v26.10.21/Xray-linux-64.zip --no-check-certificate && \
  mkdir /opt/xray && \
  unzip ./Xray-linux-64.zip -d /opt/xray && \
  chmod +x /opt/xray/xray
